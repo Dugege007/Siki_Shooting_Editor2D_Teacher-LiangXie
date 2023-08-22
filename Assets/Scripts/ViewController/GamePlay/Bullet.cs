@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace ShootingEditor2D
 {
-    public class Bullet : MonoBehaviour,IController
+    public class Bullet : MonoBehaviour, IController
     {
         private Rigidbody2D mRigidbody2D;
 
