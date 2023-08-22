@@ -1,13 +1,8 @@
 using UnityEngine;
 
-/*
- * 创建人：杜
- * 功能说明：通用的 2D触发器 检测脚本
- * 创建时间：
- */
-
 namespace ShootingEditor2D
 {
+    // 通用的 2D触发器 检测脚本
     public class Trigger2DCheck : MonoBehaviour
     {
         public LayerMask TargetLayers;

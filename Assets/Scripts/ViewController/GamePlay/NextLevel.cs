@@ -1,12 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/*
- * 创建人：杜
- * 功能说明：
- * 创建时间：
- */
-
 namespace ShootingEditor2D
 {
     public class NextLevel : MonoBehaviour
