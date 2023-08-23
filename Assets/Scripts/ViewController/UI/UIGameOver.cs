@@ -20,19 +20,12 @@ namespace ShootingEditor2D
 
         private void OnGUI()
         {
-            float labelWidth = 800;
-            float labelHeight = 120;
-            Vector2 labelSize = new Vector2(labelWidth, labelHeight);
-            Vector2 labelPosition = new Vector2(Screen.width, Screen.height) * 0.5f - labelSize * 0.5f;
-            Rect labelRect = new Rect(labelPosition, labelSize);
+            // 创建标题
+            Rect labelRect = RectHelper.RectForAnchorCenter(Screen.width * 0.5f, Screen.height * 0.5f, 800, 120);
             GUI.Label(labelRect, "游戏失败", mLabelStyle.Value);
 
-            float buttonWidth = 300;
-            float buttonHeight = 100;
-            Vector2 buttonSize = new Vector2(buttonWidth, buttonHeight);
-            Vector2 buttonPosition = new Vector2(Screen.width, Screen.height) * 0.5f - buttonSize * 0.5f + Vector2.up * 150f;
-            Rect buttonRect = new Rect(buttonPosition, buttonSize);
-
+            // 创建按钮
+            Rect buttonRect = RectHelper.RectForAnchorCenter(Screen.width * 0.5f, Screen.height * 0.5f + 150f, 300, 100);
             if (GUI.Button(buttonRect, "返回首页", mButtonStyle.Value))
             {
                 SceneManager.LoadScene("GameStart");
