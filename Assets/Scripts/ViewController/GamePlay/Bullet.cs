@@ -21,7 +21,8 @@ namespace ShootingEditor2D
 
         private void Start()
         {
-            mRigidbody2D.velocity = Vector2.right * 10;
+            float isRight = transform.lossyScale.x > 0? 1f : -1f;
+            mRigidbody2D.velocity = Vector2.right * 10f * isRight;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)

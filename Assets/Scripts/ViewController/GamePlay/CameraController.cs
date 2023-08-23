@@ -6,7 +6,14 @@ namespace ShootingEditor2D
     {
         private Transform mPlayerTrans;
 
-        private void Update()
+        private float xMin = -5;
+        private float xMax = 5;
+        private float yMin = -5;
+        private float yMax = 5;
+
+        private Vector3 mTargetPos;
+
+        private void LateUpdate()
         {
             if (mPlayerTrans == null)
             {
@@ -17,14 +24,23 @@ namespace ShootingEditor2D
                     return;
             }
 
-            Vector3 cameraPos = transform.position;
             float isRight = Mathf.Sign(mPlayerTrans.transform.localScale.x);
 
             Vector3 playerPos = mPlayerTrans.position;
-            cameraPos.x = playerPos.x + 3 * isRight;
-            cameraPos.y = playerPos.y + 2;
+            mTargetPos.x = playerPos.x + 3 * isRight;
+            mTargetPos.y = playerPos.y + 2;
+            mTargetPos.z = -10;
 
-            transform.position = cameraPos;
+            float smoothSpeed = 5f;
+
+            // 增加一个平滑处理（通过插值）
+            Vector3 currentPos = transform.position;
+            currentPos = Vector3.Lerp(currentPos, mTargetPos, smoothSpeed * Time.deltaTime);
+
+            // 锁定在一个固定区域
+            transform.position = new Vector3(Mathf.Clamp(currentPos.x, xMin, xMax), Mathf.Clamp(currentPos.y, yMin, yMax), currentPos.z);
+
+            // 目前还存在角色移动时会抖动的问题
         }
     }
 }
