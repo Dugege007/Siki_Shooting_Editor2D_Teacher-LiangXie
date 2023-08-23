@@ -1,16 +1,12 @@
 using FrameworkDesign;
 
-/*
- * 创建人：杜
- * 功能说明：
- * 创建时间：
- */
-
 namespace ShootingEditor2D
 {
     public interface IStatSystem : ISystem
     {
-        // 击杀数量
+        /// <summary>
+        /// 击杀敌人数量
+        /// </summary>
         BindableProperty<int> KillCount { get; }
     }
 

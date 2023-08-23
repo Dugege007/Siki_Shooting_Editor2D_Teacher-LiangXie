@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--手动编写一个关卡文件-->
+<level>
+	<levelItem name ="Player" x="0" y="0"/>
+	<levelItem name ="Enemy" x="2" y="0"/>
+	<levelItem name ="NextLevel" x="4" y="0"/>
+	<levelItem name ="Ground" x="0" y="-1"/>
+	<levelItem name ="Ground" x="1" y="-1"/>
+	<levelItem name ="Ground" x="2" y="-1"/>
+	<levelItem name ="Ground" x="3" y="-1"/>
+	<levelItem name ="Ground" x="4" y="-1"/>
+	<levelItem name ="Ground" x="5" y="-1"/>
+</level>

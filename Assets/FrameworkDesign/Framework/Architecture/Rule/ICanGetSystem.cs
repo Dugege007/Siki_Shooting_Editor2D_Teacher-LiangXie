@@ -1,25 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-/*
- * 创建人：杜
- * 功能说明：可获取 System 规则
- * 创建时间：
- */
 
 namespace FrameworkDesign
 {
-    public interface ICanGetSystem : IBelongToArchitecture
-    {
-
-    }
+    /// <summary>
+    /// 可获取系统 接口
+    /// </summary>
+    public interface ICanGetSystem : IBelongToArchitecture { }
 
     public static class CanGetSystemExtension
     {
+        /// <summary>
+        /// 扩展方法：从架构中获取系统
+        /// </summary>
+        /// <typeparam name="T">系统类型，必须实现 ISystem 接口</typeparam>
+        /// <param name="self">实现 ICanGetSystem 接口的实例</param>
+        /// <returns>返回指定类型的系统实例</returns>
         public static T GetSystem<T>(this ICanGetSystem self) where T : class, ISystem
         {
-            return self.GetArchiteccture().GetSystem<T>();
+            return self.GetArchitecture().GetSystem<T>();
         }
     }
 }

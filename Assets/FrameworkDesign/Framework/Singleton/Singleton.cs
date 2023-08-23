@@ -1,17 +1,25 @@
 using System;
 using System.Reflection;
 
-/*
- * 创建人：杜
- * 功能说明：泛型单例工具
- * 创建时间：
- */
-
 namespace FrameworkDesign
 {
+    /// <summary>
+    /// 泛型单例工具类
+    /// </summary>
+    /// <typeparam name="T">单例类的类型</typeparam>
+    /// <remarks>
+    /// 该类提供了一种通用的单例模式实现。
+    /// 通过反射，它可以自动创建和管理任何具有非公共默认构造函数的类的单例实例。
+    /// </remarks>
     public class Singleton<T> where T : Singleton<T>
     {
+        // 存储单例实例
         private static T mInstance;
+        /// <summary>
+        /// 获取单例实例
+        /// </summary>
+        /// <value>单例实例</value>
+        /// <exception cref="Exception">如果找不到非公共的默认构造函数，则抛出异常</exception>
         public static T Instance
         {
             get

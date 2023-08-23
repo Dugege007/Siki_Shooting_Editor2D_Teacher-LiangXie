@@ -1,17 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-/*
- * 创建人：杜
- * 功能说明：
- * 创建时间：
- */
 
 namespace FrameworkDesign
 {
-    public interface IUtility
+    /// <summary>
+    /// 工具层接口
+    /// </summary>
+    public interface IUtility 
     {
-
+        // 此接口不需要额外的方法定义
     }
 }

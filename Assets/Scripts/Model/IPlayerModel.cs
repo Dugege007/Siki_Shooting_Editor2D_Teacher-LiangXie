@@ -4,7 +4,9 @@ namespace ShootingEditor2D
 {
     public interface IPlayerModel : IModel
     {
-        // 玩家生命值
+        /// <summary>
+        /// 玩家生命值
+        /// </summary>
         BindableProperty<int> HP { get; }
     }
 

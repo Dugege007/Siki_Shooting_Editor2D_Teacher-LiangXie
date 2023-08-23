@@ -7,7 +7,7 @@ namespace ShootingEditor2D
     {
         private Rigidbody2D mRigidbody2D;
 
-        public IArchitecture GetArchiteccture()
+        public IArchitecture GetArchitecture()
         {
             return ShootingEditor2D.Interface;
         }

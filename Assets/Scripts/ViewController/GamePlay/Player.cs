@@ -34,7 +34,8 @@ namespace ShootingEditor2D
         {
             var horizontalMovement = Input.GetAxis("Horizontal");
 
-            mRigidbody2D.velocity = new Vector2(horizontalMovement * 5f, mRigidbody2D.velocity.y);// y 轴值为 mRigidbody2D.velocity.y 是为了方便之后加跳跃
+            mRigidbody2D.velocity = new Vector2(horizontalMovement * 5f, mRigidbody2D.velocity.y);
+            // y 轴值为 mRigidbody2D.velocity.y 是为了方便之后加跳跃
 
             var grounded = mGroundCheck.IsTriggered;
 

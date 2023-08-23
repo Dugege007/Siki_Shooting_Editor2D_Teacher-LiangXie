@@ -1,25 +1,29 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-
-/*
- * 创建人：杜
- * 功能说明：IOC容器
- * 
- * Inversion of Control 控制反转
- * 也称依赖注入（Dependency Injection，DI）
- * 
- * 创建时间：
- */
 
 namespace FrameworkDesign
 {
+    /// <summary>
+    /// IOC容器 (Inversion of Control 控制反转)
+    /// 也称依赖注入（Dependency Injection，DI）
+    /// </summary>
+    /// <remarks>
+    /// IOC容器用于管理对象的创建和生命周期，允许将依赖关系从代码中解耦；
+    /// 通过此容器，可以注册和检索单例对象，从而实现跨组件的共享和重用。
+    /// </remarks>
     public class IOCContainer
     {
-        Dictionary<Type, object> mInstances = new Dictionary<Type, object>();
+        // 存储已注册的单例对象
+        private Dictionary<Type, object> mInstances = new Dictionary<Type, object>();
 
-        // 注册 需要应用单例的类 和 该单例对象 的键值对
+        /// <summary>
+        /// 注册单例对象
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="instance">单例对象实例</param>
+        /// <remarks>
+        /// 如果该类型已注册，则会更新现有实例。
+        /// </remarks>
         public void Register<T>(T instance)
         {
             var key = typeof(T);
@@ -33,7 +37,11 @@ namespace FrameworkDesign
             }
         }
 
-        // 获取可以使用单例的类
+        /// <summary>
+        /// 获取已注册的单例对象
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <returns>返回单例对象实例，如果未注册则返回 null</returns>
         public T Get<T>() where T : class
         {
             var key = typeof(T);

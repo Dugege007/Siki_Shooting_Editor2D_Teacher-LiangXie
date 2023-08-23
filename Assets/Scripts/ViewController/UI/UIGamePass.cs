@@ -39,7 +39,6 @@ namespace ShootingEditor2D
             {
                 Debug.Log("返回首页");
             }
-            
         }
     }
 }

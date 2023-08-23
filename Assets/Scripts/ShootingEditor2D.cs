@@ -2,14 +2,18 @@ using FrameworkDesign;
 
 namespace ShootingEditor2D
 {
+    /// <summary>
+    /// 2D 射击游戏架构类
+    /// </summary>
     public class ShootingEditor2D : Architecture<ShootingEditor2D>
     {
+        // 初始化架构
         protected override void Init()
         {
-            // 注册到架构中
+            // 将所需要的层注册到架构中
+
             // 系统层
             this.RegisterSystem<IStatSystem>(new StatSystem());
-
             // 数据层
             this.RegisterModel<IPlayerModel>(new PlayerModel());
         }

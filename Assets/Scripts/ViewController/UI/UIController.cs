@@ -20,7 +20,7 @@ namespace ShootingEditor2D
             };
         });
 
-        public IArchitecture GetArchiteccture()
+        public IArchitecture GetArchitecture()
         {
             return ShootingEditor2D.Interface;
         }

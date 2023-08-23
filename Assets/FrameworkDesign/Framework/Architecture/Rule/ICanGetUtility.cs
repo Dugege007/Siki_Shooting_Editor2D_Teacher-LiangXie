@@ -1,25 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-/*
- * 创建人：杜
- * 功能说明：可获取 Utility 规则
- * 创建时间：
- */
 
 namespace FrameworkDesign
 {
-    public interface ICanGetUtility : IBelongToArchitecture
-    {
-
-    }
+    /// <summary>
+    /// 可获取工具 接口
+    /// </summary>
+    public interface ICanGetUtility : IBelongToArchitecture { }
 
     public static class CanGetUtilityExtension
     {
+        /// <summary>
+        /// 扩展方法：从架构中获取工具
+        /// </summary>
+        /// <typeparam name="T">工具类型，必须实现 IUtility 接口</typeparam>
+        /// <param name="self">实现 ICanGetUtility 接口的实例</param>
+        /// <returns>返回指定类型的工具实例</returns>
         public static T GetUtility<T>(this ICanGetUtility self) where T : class, IUtility
         {
-            return self.GetArchiteccture().GetUtility<T>();
+            return self.GetArchitecture().GetUtility<T>();
         }
     }
 }
