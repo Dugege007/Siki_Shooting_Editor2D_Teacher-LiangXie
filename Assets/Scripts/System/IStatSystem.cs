@@ -2,6 +2,9 @@ using FrameworkDesign;
 
 namespace ShootingEditor2D
 {
+    /// <summary>
+    /// 统计系统 接口
+    /// </summary>
     public interface IStatSystem : ISystem
     {
         /// <summary>
@@ -10,7 +13,9 @@ namespace ShootingEditor2D
         BindableProperty<int> KillCount { get; }
     }
 
-    // 实现类
+    /// <summary>
+    /// 统计系统 实现类
+    /// </summary>
     public class StatSystem : AbstractSystem, IStatSystem
     {
         public BindableProperty<int> KillCount { get; } = new BindableProperty<int>() { Value = 0 };

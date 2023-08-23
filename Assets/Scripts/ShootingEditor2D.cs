@@ -14,6 +14,8 @@ namespace ShootingEditor2D
 
             // 系统层
             this.RegisterSystem<IStatSystem>(new StatSystem());
+            this.RegisterSystem<IGunSystem>(new GunSystem());
+
             // 数据层
             this.RegisterModel<IPlayerModel>(new PlayerModel());
         }

@@ -19,12 +19,12 @@ namespace ShootingEditor2D
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.K))
+            if (Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.Space))
             {
                 mJumpPressed = true;
             }
 
-            if (Input.GetKeyDown(KeyCode.J))
+            if (Input.GetKeyDown(KeyCode.J) || Input.GetMouseButtonDown(0))
             {
                 mGun.Shoot();
             }
