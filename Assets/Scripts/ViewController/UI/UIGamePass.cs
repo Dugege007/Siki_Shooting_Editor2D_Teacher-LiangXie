@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ShootingEditor2D
 {
@@ -20,8 +21,8 @@ namespace ShootingEditor2D
         private void OnGUI()
         {
             // 绘制 游戏通关 标题
-            var labelWidth = 400;
-            var labelHeight = 100;
+            var labelWidth = 600;
+            var labelHeight = 120;
             var labelPosition = new Vector2(Screen.width - labelWidth, Screen.height - labelHeight) * 0.5f;
             var labelSize = new Vector2(labelWidth, labelHeight);
             var labelRect = new Rect(labelPosition, labelSize);
@@ -37,7 +38,7 @@ namespace ShootingEditor2D
 
             if(GUI.Button(buttonRext, "返回首页", mButtonStyle.Value))
             {
-                Debug.Log("返回首页");
+                SceneManager.LoadScene("GameStart");
             }
         }
     }
