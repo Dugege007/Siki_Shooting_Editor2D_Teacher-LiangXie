@@ -10,13 +10,18 @@ namespace ShootingEditor2D
 
         protected override void OnExecute()
         {
+            // 获取系统
             IGunSystem gunSystem = this.GetSystem<IGunSystem>();
             ITimeSystem timeSystem = this.GetSystem<ITimeSystem>();
 
             gunSystem.CurrentGun.BulletCountInGun.Value--;
             gunSystem.CurrentGun.GunState.Value = GunState.Shooting;
 
-            timeSystem.AddDelayTask(0.333f, () =>
+            // 获取模型
+            IGunConfigModel gunConfigModel = this.GetModel<IGunConfigModel>();
+            GunConfigItem gunConfigItem = gunConfigModel.GetItemByName(gunSystem.CurrentGun.Name.Value);
+
+            timeSystem.AddDelayTask( 1 / gunConfigItem.Frequency, () =>
             {
                 gunSystem.CurrentGun.GunState.Value = GunState.Idle;
             });
