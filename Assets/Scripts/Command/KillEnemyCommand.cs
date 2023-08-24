@@ -13,7 +13,7 @@ namespace ShootingEditor2D
             if (randomIndex < 80)
             {
                 // 随机获得 1 到 3 发子弹
-                this.GetSystem<IGunSystem>().CurrentGun.BulletCount.Value += Random.Range(1, 4);
+                this.GetSystem<IGunSystem>().CurrentGun.BulletCountInGun.Value += Random.Range(1, 4);
             }
         }
     }

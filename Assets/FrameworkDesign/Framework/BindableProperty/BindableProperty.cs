@@ -12,11 +12,11 @@ namespace FrameworkDesign
     /// <summary>
     /// 可绑定属性的简单实现，用于可比较的值的更新
     /// </summary>
-    /// <typeparam name="T">必须是可比较的类型</typeparam>
+    /// <typeparam name="T">比较的类型</typeparam>
     /// <remarks>
     /// 数据 + 数据变更事件的合体，既存储数据，又充当C#中的属性角色，也可以让别的地方监听它数据的变更事件。
     /// </remarks>
-    public class BindableProperty<T> where T : IEquatable<T>    // IEquatable 值可比较的
+    public class BindableProperty<T>
     {
         private T mValue = default(T);
 
@@ -74,7 +74,7 @@ namespace FrameworkDesign
     /// 可绑定属性的注销类，用于注销值变更事件
     /// </summary>
     /// <typeparam name="T">必须是可比较的类型</typeparam>
-    public class BindablePropertyUnregister<T> : IUnRegister where T : IEquatable<T>
+    public class BindablePropertyUnregister<T> : IUnRegister
     {
         public BindableProperty<T> BindableProperty { get; set; }
 

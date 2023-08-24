@@ -23,7 +23,7 @@ namespace ShootingEditor2D
 
         public void Shoot()
         {
-            if (mGunInfo.BulletCount.Value > 0)
+            if (mGunInfo.BulletCountInGun.Value > 0)
             {
                 var bullet = Instantiate(mBullet, mBullet.transform.position, mBullet.transform.rotation);
                 // 将全局的缩放值设置给子弹
