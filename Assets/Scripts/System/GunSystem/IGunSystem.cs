@@ -11,6 +11,8 @@ namespace ShootingEditor2D
     {
         GunInfo CurrentGun { get; }
 
+        Queue<GunInfo> GunInfos { get; }
+
         void PickGun(string name, int bulletCountInGun, int bulletCountOutGun);
 
         void ShiftGun();
@@ -43,6 +45,7 @@ namespace ShootingEditor2D
         };
 
         private Queue<GunInfo> mGunInfos = new Queue<GunInfo>();
+        public Queue<GunInfo> GunInfos {get { return mGunInfos;}}
 
         public void PickGun(string name, int bulletCountInGun, int bulletCountOutGun)
         {

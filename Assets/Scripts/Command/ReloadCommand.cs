@@ -17,7 +17,7 @@ namespace ShootingEditor2D
             if (needBulletCount > 0)
             {
                 // 切换到换弹状态
-                currentGun.GunState.Value = GunState.Reload;
+                currentGun.GunState.Value = GunState.Reloading;
 
                 // 经过装弹时间后执行回调
                 this.GetSystem<ITimeSystem>().AddDelayTask(gunConfigItem.ReloadSeconds, () =>

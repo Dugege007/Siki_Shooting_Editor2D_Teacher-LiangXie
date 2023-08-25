@@ -7,7 +7,7 @@ namespace ShootingEditor2D
     {
         Idle,
         Shooting,
-        Reload,
+        Reloading,
         EmptyBullet,
         CoolDown,
     }
