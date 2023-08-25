@@ -40,11 +40,6 @@ namespace ShootingEditor2D
             {
                 mGun.Reload();
             }
-
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                this.SendCommand(new PickGunCommand("冲锋枪", 30, 100));
-            }
         }
 
         private void FixedUpdate()

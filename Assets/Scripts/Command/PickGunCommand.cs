@@ -9,6 +9,12 @@ namespace ShootingEditor2D
         private readonly int mBulletInGun;
         private readonly int mBulletOutGun;
 
+        /// <summary>
+        /// 捡枪命令
+        /// </summary>
+        /// <param name="name">枪械名称</param>
+        /// <param name="bulletInGun">枪内子弹</param>
+        /// <param name="bulletOutGun">枪外子弹</param>
         public PickGunCommand(string name, int bulletInGun, int bulletOutGun)
         {
             mName = name;
@@ -19,7 +25,7 @@ namespace ShootingEditor2D
         protected override void OnExecute()
         {
             IGunSystem gunSystem = this.GetSystem<IGunSystem>();
-            gunSystem.PickGun(mName, mBulletOutGun, mBulletOutGun);
+            gunSystem.PickGun(mName, mBulletInGun, mBulletOutGun);
         }
     }
 }
