@@ -1,5 +1,4 @@
 using FrameworkDesign;
-using System;
 
 namespace ShootingEditor2D
 {
