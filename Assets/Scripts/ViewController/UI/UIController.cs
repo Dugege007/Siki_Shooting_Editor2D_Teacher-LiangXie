@@ -39,9 +39,7 @@ namespace ShootingEditor2D
             // 获取数据
             mPlayerModel = this.GetModel<IPlayerModel>();
             // 查询枪械信息
-            mGunConfigModel = this.GetModel<IGunConfigModel>();
-            GunConfigItem gunConfigItem = mGunConfigModel.GetItemByName(mGunSystem.CurrentGun.Name.Value);
-            mMaxBulletCount = gunConfigItem.MaxBulletCount;
+            mMaxBulletCount = new MaxBulletCountQuery(mGunSystem.CurrentGun.Name.Value).Do();
         }
 
         private void OnGUI()
