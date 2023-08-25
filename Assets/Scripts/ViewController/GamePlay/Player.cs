@@ -1,3 +1,4 @@
+using FrameworkDesign;
 using UnityEngine;
 
 namespace ShootingEditor2D
@@ -29,6 +30,11 @@ namespace ShootingEditor2D
             {
                 mGun.Shoot();
             }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                mGun.Reload();
+            }
         }
 
         private void FixedUpdate()
@@ -36,7 +42,7 @@ namespace ShootingEditor2D
             var horizontalMovement = Input.GetAxis("Horizontal");
 
             // 移动转向
-            if (horizontalMovement < 0 && transform.localScale.x > 0 || 
+            if (horizontalMovement < 0 && transform.localScale.x > 0 ||
                 horizontalMovement > 0 && transform.localScale.x < 0)
             {
                 Vector3 localScale = transform.localScale;
