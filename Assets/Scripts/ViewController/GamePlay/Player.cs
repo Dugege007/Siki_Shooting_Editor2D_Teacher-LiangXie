@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ShootingEditor2D
 {
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, IController
     {
         private Rigidbody2D mRigidbody2D;
         private Trigger2DCheck mGroundCheck;
@@ -11,6 +11,11 @@ namespace ShootingEditor2D
 
         // 是否按下跳跃键
         private bool mJumpPressed;
+
+        public IArchitecture GetArchitecture()
+        {
+            return ShootingEditor2D.Interface;
+        }
 
         private void Awake()
         {
@@ -26,7 +31,7 @@ namespace ShootingEditor2D
                 mJumpPressed = true;
             }
 
-            if (Input.GetKeyDown(KeyCode.J) || Input.GetMouseButtonDown(0))
+            if (Input.GetKey(KeyCode.J) || Input.GetMouseButton(0))
             {
                 mGun.Shoot();
             }
@@ -34,6 +39,11 @@ namespace ShootingEditor2D
             if (Input.GetKeyDown(KeyCode.R))
             {
                 mGun.Reload();
+            }
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                this.SendCommand(new PickGunCommand("冲锋枪", 30, 100));
             }
         }
 
