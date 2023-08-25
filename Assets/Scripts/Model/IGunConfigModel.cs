@@ -17,10 +17,10 @@ namespace ShootingEditor2D
     /// </summary>
     public class GunConfigItem
     {
-        public GunConfigItem(string name, int bulletMaxCount, float attack, float frequency, float shootDistance, float recoil, bool needBullet, float reloadSeconds, string description)
+        public GunConfigItem(string name, int maxBulletCount, float attack, float frequency, float shootDistance, float recoil, bool needBullet, float reloadSeconds, string description)
         {
             Name = name;
-            BulletMaxCount = bulletMaxCount;
+            MaxBulletCount = maxBulletCount;
             Attack = attack;
             Frequency = frequency;
             ShootDistance = shootDistance;
@@ -31,7 +31,7 @@ namespace ShootingEditor2D
         }
 
         public string Name { get; set; }
-        public int BulletMaxCount { get; set; }
+        public int MaxBulletCount { get; set; }
         public float Attack { get; set; }
         public float Frequency { get; set; }
         public float ShootDistance { get; set; }
