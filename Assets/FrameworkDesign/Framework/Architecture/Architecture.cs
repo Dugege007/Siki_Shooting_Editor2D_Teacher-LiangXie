@@ -1,3 +1,4 @@
+using ShootingEditor2D;
 using System;
 using System.Collections.Generic;
 
@@ -213,6 +214,22 @@ namespace FrameworkDesign
             command.SetArchitecture(this);
             // 执行命令
             command.Execute();
+        }
+
+        /// <summary>
+        /// 发送查询请求
+        /// </summary>
+        /// <typeparam name="TResult">查询结果的类型</typeparam>
+        /// <param name="query">实现了 IQuery 接口的查询对象</param>
+        /// <returns>返回查询的结果</returns>
+        /// <remarks>
+        /// 该方法允许发送一个查询请求，并获取查询的结果；
+        /// 后续可在该方法中添加更多查询规则。
+        /// </remarks>
+        public TResult SendQuery<TResult>(IQuery<TResult> query)
+        {
+            query.SetArchitecture(this);
+            return query.Do();
         }
 
         /// <summary>

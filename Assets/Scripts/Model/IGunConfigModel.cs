@@ -17,6 +17,21 @@ namespace ShootingEditor2D
     /// </summary>
     public class GunConfigItem
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <param name="maxBulletCount">最大子弹数</param>
+        /// <param name="attack">攻击力</param>
+        /// <param name="frequency">攻击频率</param>
+        /// <param name="shootDistance">攻击距离</param>
+        /// <param name="recoil">后坐力</param>
+        /// <param name="needBullet">是否需要子弹</param>
+        /// <param name="reloadSeconds">换弹时间</param>
+        /// <param name="description">描述</param>
+        /// <remarks>
+        /// 定义枪支的各项参数配置。
+        /// </remarks>
         public GunConfigItem(string name, int maxBulletCount, float attack, float frequency, float shootDistance, float recoil, bool needBullet, float reloadSeconds, string description)
         {
             Name = name;

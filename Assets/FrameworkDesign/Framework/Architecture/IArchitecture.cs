@@ -1,3 +1,4 @@
+using ShootingEditor2D;
 using System;
 
 namespace FrameworkDesign
@@ -65,6 +66,14 @@ namespace FrameworkDesign
         /// <typeparam name="T">命令类型</typeparam>
         /// <param name="command">命令实例</param>
         void SendCommand<T>(T command) where T : ICommand;
+
+        /// <summary>
+        /// 发送查询
+        /// </summary>
+        /// <typeparam name="TResult">查询返回的结果类型</typeparam>
+        /// <param name="query">查询实例，实现了IQuery接口的对象</param>
+        /// <returns>返回查询的结果</returns>
+        TResult SendQuery<TResult>(IQuery<TResult> query);
 
         /// <summary>
         /// 发送事件

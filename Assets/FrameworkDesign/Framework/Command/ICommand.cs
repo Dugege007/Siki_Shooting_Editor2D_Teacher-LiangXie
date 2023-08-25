@@ -6,10 +6,10 @@ namespace FrameworkDesign
     /// </summary>
     /// <remarks>
     /// 用于处理交互逻辑，分担控制器的交互逻辑职责；
-    /// 基本功能和行为：标记所属架构、可设置架构、可获取系统、可获取模型、可获取工具、可发送命令、可发送事件；
+    /// 基本功能和行为：标记所属架构、可设置架构、可获取系统、可获取模型、可获取工具、可发送命令、可发送事件、可发送查询；
     /// 通过将混乱的交互逻辑代码从控制器迁移到命令中，使代码结构更清晰。
     /// </remarks>
-    public interface ICommand : IBelongToArchitecture, ICanSetArchitecture, ICanGetSystem, ICanGetModel, ICanGetUtility, ICanSendCommand, ICanSendEvent
+    public interface ICommand : IBelongToArchitecture, ICanSetArchitecture, ICanGetSystem, ICanGetModel, ICanGetUtility, ICanSendCommand, ICanSendEvent, ICanSendQuery
     {
         /// <summary>
         /// 执行命令
