@@ -40,6 +40,11 @@ namespace ShootingEditor2D
             {
                 mGun.Reload();
             }
+
+            if (Input.GetKeyDown(KeyCode.E) || Input.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                this.SendCommand<ShiftGunCommand>();
+            }
         }
 
         private void FixedUpdate()

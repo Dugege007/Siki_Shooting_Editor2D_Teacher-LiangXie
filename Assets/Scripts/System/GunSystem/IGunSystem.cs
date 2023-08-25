@@ -12,6 +12,8 @@ namespace ShootingEditor2D
         GunInfo CurrentGun { get; }
 
         void PickGun(string name, int bulletCountInGun, int bulletCountOutGun);
+
+        void ShiftGun();
     }
 
     public struct OnCurrentGunChanged
@@ -51,7 +53,7 @@ namespace ShootingEditor2D
                 CurrentGun.BulletCountOutGun.Value += bulletCountOutGun;
             }
             // 如果与缓存的枪械相同
-            else if(mGunInfos.Any(gunInfo => gunInfo.Name.Value == name))
+            else if (mGunInfos.Any(gunInfo => gunInfo.Name.Value == name))
             {
                 // 从缓存中取出枪械信息
                 // .First() 方法返回序列中满足条件的第一个元素
@@ -62,29 +64,52 @@ namespace ShootingEditor2D
             // 如果是一把新枪
             else
             {
-                // 缓存当前枪械信息
-                GunInfo currentGunInfo = new GunInfo()
-                {
-                    Name = new BindableProperty<string> { Value = CurrentGun.Name.Value },
-                    GunState = new BindableProperty<GunState> { Value = CurrentGun.GunState.Value },
-                    BulletCountInGun = new BindableProperty<int> { Value = CurrentGun.BulletCountInGun.Value },
-                    BulletCountOutGun = new BindableProperty<int> { Value = CurrentGun.BulletCountOutGun.Value },
-                };
-                // 缓存到队列
-                mGunInfos.Enqueue(currentGunInfo);
-
-                // 修改当前枪械信息为刚捡到的枪的信息
-                CurrentGun.Name.Value = name;
-                CurrentGun.GunState.Value = GunState.Idle;
-                CurrentGun.BulletCountInGun.Value = bulletCountInGun;
-                CurrentGun.BulletCountOutGun.Value = bulletCountOutGun;
-
-                // 发送事件给表现层，以更新枪械信息 UI
-                this.SendEvent(new OnCurrentGunChanged()
-                {
-                    Name = name,
-                });
+                // 当前枪信息入队，并将下把枪的信息赋给当前枪
+                EnqueueCurrentGun(name, GunState.Idle, bulletCountInGun, bulletCountOutGun);
             }
+        }
+
+        public void ShiftGun()
+        {
+            if (mGunInfos.Count == 0) return;
+
+            // 下把枪出队
+            GunInfo preGunInfo = mGunInfos.Dequeue();
+            // 当前枪信息入队，并将下把枪的信息赋给当前枪
+            EnqueueCurrentGun(preGunInfo.Name.Value, preGunInfo.GunState.Value, preGunInfo.BulletCountInGun.Value, preGunInfo.BulletCountOutGun.Value);
+        }
+
+        /// <summary>
+        /// 缓存当前枪械信息，并将下把枪信息赋给当前枪
+        /// </summary>
+        /// <param name="nextGunName">枪械名称</param>
+        /// <param name="nextGunState">枪械状态</param>
+        /// <param name="nextBulletInGun">枪内子弹数</param>
+        /// <param name="nextBulletOutGun">枪外子弹数</param>
+        private void EnqueueCurrentGun(string nextGunName, GunState nextGunState, int nextBulletInGun, int nextBulletOutGun)
+        {
+            // 缓存当前枪械信息
+            GunInfo currentGunInfo = new GunInfo()
+            {
+                Name = new BindableProperty<string> { Value = CurrentGun.Name.Value },
+                GunState = new BindableProperty<GunState> { Value = CurrentGun.GunState.Value },
+                BulletCountInGun = new BindableProperty<int> { Value = CurrentGun.BulletCountInGun.Value },
+                BulletCountOutGun = new BindableProperty<int> { Value = CurrentGun.BulletCountOutGun.Value },
+            };
+            // 缓存到队列
+            mGunInfos.Enqueue(currentGunInfo);
+
+            // 修改当前枪械信息为刚捡到的枪的信息
+            CurrentGun.Name.Value = nextGunName;
+            CurrentGun.GunState.Value = nextGunState;
+            CurrentGun.BulletCountInGun.Value = nextBulletInGun;
+            CurrentGun.BulletCountOutGun.Value = nextBulletOutGun;
+
+            // 发送事件给表现层，以更新枪械信息 UI
+            this.SendEvent(new OnCurrentGunChanged()
+            {
+                Name = nextGunName,
+            });
         }
     }
 }
