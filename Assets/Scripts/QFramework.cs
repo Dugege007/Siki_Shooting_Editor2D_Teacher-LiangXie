@@ -1234,7 +1234,7 @@ namespace QFramework
         /// </summary>
         /// <param name="onValueChanged">值变更时的回调方法</param>
         /// <returns>返回一个可以用于注销的接口</returns>
-        public IUnRegister RegisterOnValueChanged(Action<T> onValueChanged) // +
+        public IUnRegister Register(Action<T> onValueChanged) // +
         {
             mOnValueChanged += onValueChanged;
             return new BindablePropertyUnregister<T>()
@@ -1248,7 +1248,7 @@ namespace QFramework
         /// 注销值变更事件
         /// </summary>
         /// <param name="onValueChanged">要注销的回调方法</param>
-        public void UnRegisterOnValueChanged(Action<T> onValueChanged)  // -
+        public void UnRegister(Action<T> onValueChanged)  // -
         {
             mOnValueChanged -= onValueChanged;
         }
@@ -1269,7 +1269,7 @@ namespace QFramework
         /// </summary>
         public void UnRegister()
         {
-            BindableProperty.UnRegisterOnValueChanged(OnValueChanged);
+            BindableProperty.UnRegister(OnValueChanged);
 
             // 更好的方式
             BindableProperty = null;
