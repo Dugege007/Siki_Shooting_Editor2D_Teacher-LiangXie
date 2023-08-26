@@ -3,14 +3,9 @@ using UnityEngine;
 
 namespace ShootingEditor2D
 {
-    public class Bullet : MonoBehaviour, IController
+    public class Bullet : ShootingEditor2DController
     {
         private Rigidbody2D mRigidbody2D;
-
-        public IArchitecture GetArchitecture()
-        {
-            return ShootingEditor2D.Interface;
-        }
 
         private void Awake()
         {

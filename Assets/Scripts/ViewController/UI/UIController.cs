@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ShootingEditor2D
 {
-    public class UIController : MonoBehaviour, IController
+    public class UIController : ShootingEditor2DController
     {
         private IStatSystem mIStatSystem;
         private IGunSystem mGunSystem;
@@ -24,11 +24,6 @@ namespace ShootingEditor2D
                 fontSize = 40
             };
         });
-
-        public IArchitecture GetArchitecture()
-        {
-            return ShootingEditor2D.Interface;
-        }
 
         private void Awake()
         {

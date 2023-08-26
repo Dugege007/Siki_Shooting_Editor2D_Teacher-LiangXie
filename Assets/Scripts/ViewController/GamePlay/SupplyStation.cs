@@ -3,13 +3,8 @@ using UnityEngine;
 
 namespace ShootingEditor2D
 {
-    public class SupplyStation : MonoBehaviour, IController
+    public class SupplyStation : ShootingEditor2DController
     {
-        public IArchitecture GetArchitecture()
-        {
-            return ShootingEditor2D.Interface;
-        }
-
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.CompareTag("Player"))

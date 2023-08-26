@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ShootingEditor2D
 {
-    public class Player : MonoBehaviour, IController
+    public class Player : ShootingEditor2DController
     {
         private Rigidbody2D mRigidbody2D;
         private Trigger2DCheck mGroundCheck;
@@ -11,11 +11,6 @@ namespace ShootingEditor2D
 
         // 是否按下跳跃键
         private bool mJumpPressed;
-
-        public IArchitecture GetArchitecture()
-        {
-            return ShootingEditor2D.Interface;
-        }
 
         private void Awake()
         {

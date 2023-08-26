@@ -3,17 +3,12 @@ using UnityEngine;
 
 namespace ShootingEditor2D
 {
-    public class Gun : MonoBehaviour, IController
+    public class Gun : ShootingEditor2DController
     {
         private Bullet mBullet;
         // 获取枪械信息
         private GunInfo mGunInfo;
         private int mMaxBulletCount;
-
-        public IArchitecture GetArchitecture()
-        {
-            return ShootingEditor2D.Interface;
-        }
 
         private void Awake()
         {
