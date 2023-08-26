@@ -1244,6 +1244,24 @@ namespace QFramework
             };
         }
 
+        public IUnRegister RegisterWithInitValue(Action<T> onValueChanged)
+        {
+            onValueChanged(mValue);
+            return Register(onValueChanged);
+        }
+
+        public static implicit operator T(BindableProperty<T> property)
+        {
+            return property.Value;
+        }
+        // 此方法可以大幅简化比较操作
+        // a.Value == b.Value  =>  a == b
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
         /// <summary>
         /// 注销值变更事件
         /// </summary>
