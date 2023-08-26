@@ -11,6 +11,7 @@ namespace ShootingEditor2D
     {
         private class LevelItemInfo
         {
+            public string Path;
             public string Name;
             public float X;
             public float Y;
@@ -30,6 +31,9 @@ namespace ShootingEditor2D
 
         private OperateMode mCurrentOperateMode;
         private BrushType mCurrentBrushType = BrushType.Ground;
+
+        private Transform levelTrans;
+        private Transform charactersTrans;
 
         public SpriteRenderer EmptyHighLight;
         private GameObject mCurrentObjectMouseOn;
@@ -52,6 +56,12 @@ namespace ShootingEditor2D
             fontSize = 35,
             alignment = TextAnchor.MiddleCenter,
         });
+
+        private void Awake()
+        {
+            levelTrans = transform.Find("Level");
+            charactersTrans = transform.Find("Characters");
+        }
 
         private void OnGUI()
         {
@@ -76,52 +86,7 @@ namespace ShootingEditor2D
                 mCurrentOperateMode = OperateMode.Erase;
                 Debug.Log("±£´æ");
 
-                List<LevelItemInfo> infos = new List<LevelItemInfo>(transform.childCount);
-                foreach (Transform child in transform)
-                {
-                    infos.Add(new LevelItemInfo()
-                    {
-                        Name = child.name,
-                        X = child.position.x,
-                        Y = child.position.y,
-                    });
-                    Debug.Log($"Name: {child.name}\n" + $"X: {child.position.x} Y: {child.position.y}");
-                }
-
-                XmlDocument document = new XmlDocument();
-                XmlDeclaration declaration = document.CreateXmlDeclaration("1.0", "UTF-8", "");
-                document.AppendChild(declaration);
-
-                XmlElement level = document.CreateElement("level");
-                document.AppendChild(level);
-
-                foreach (var levelItemInfo in infos)
-                {
-                    XmlElement levelItem = document.CreateElement("levelItem");
-                    levelItem.SetAttribute("name", levelItemInfo.Name);
-                    levelItem.SetAttribute("x", levelItemInfo.X.ToString());
-                    levelItem.SetAttribute("y", levelItemInfo.Y.ToString());
-                    level.AppendChild(levelItem);
-                }
-
-                //StringBuilder stringBuilder = new StringBuilder();
-                //StringWriter stringWriter = new StringWriter(stringBuilder);
-                //XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
-                //xmlTextWriter.Formatting = Formatting.Indented;
-                //document.WriteTo(xmlTextWriter);
-
-                //Debug.Log(stringBuilder.ToString());
-
-                string levelFilesFolder = Application.persistentDataPath + "/LevelFiles";
-                Debug.Log(levelFilesFolder);
-
-                if (!Directory.Exists(levelFilesFolder))
-                {
-                    Directory.CreateDirectory(levelFilesFolder);
-                }
-
-                string levelFilePath = levelFilesFolder + "/" + DateTime.Now.ToString("yyyyMMddhhmmss") + "_level_data.xml";
-                document.Save(levelFilePath);
+                SaveXML();
             }
 
             if (mCurrentOperateMode == OperateMode.Draw)
@@ -189,19 +154,22 @@ namespace ShootingEditor2D
             {
                 if (mCanDraw && mCurrentOperateMode == OperateMode.Draw)
                 {
+                    string resourcePath = "Level/Ground";
                     if (mCurrentBrushType == BrushType.Ground)
                     {
-                        GameObject groundPrefab = Resources.Load<GameObject>("Level/Ground");
+                        GameObject groundPrefab = Resources.Load<GameObject>(resourcePath);
                         GameObject groundObj = Instantiate(groundPrefab, transform);
                         groundObj.transform.position = mouseWorldPos;
                         groundObj.name = "Ground";
+                        groundObj.transform.SetParent(levelTrans);
                     }
                     else if (mCurrentBrushType == BrushType.Player)
                     {
-                        GameObject playerPrefab = Resources.Load<GameObject>("Level/Ground");
+                        GameObject playerPrefab = Resources.Load<GameObject>(resourcePath);
                         GameObject playerObj = Instantiate(playerPrefab, transform);
                         playerObj.transform.position = mouseWorldPos;
                         playerObj.name = "Player";
+                        playerObj.transform.SetParent(charactersTrans);
 
                         playerObj.GetComponent<SpriteRenderer>().color = Color.yellow;
                     }
@@ -214,6 +182,73 @@ namespace ShootingEditor2D
 
                     mCurrentObjectMouseOn = null;
                 }
+            }
+        }
+
+        private void SaveXML()
+        {
+            List<LevelItemInfo> characterInfos = GetLevelItemInfos(charactersTrans);
+            List<LevelItemInfo> levelInfos = GetLevelItemInfos(levelTrans);
+
+            XmlDocument document = new XmlDocument();
+            XmlDeclaration declaration = document.CreateXmlDeclaration("1.0", "UTF-8", "");
+            document.AppendChild(declaration);
+
+            XmlElement level = document.CreateElement("level");
+            document.AppendChild(level);
+
+            SetItemInfoAttributes(characterInfos, document, level);
+            SetItemInfoAttributes(levelInfos, document, level);
+
+            //StringBuilder stringBuilder = new StringBuilder();
+            //StringWriter stringWriter = new StringWriter(stringBuilder);
+            //XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
+            //xmlTextWriter.Formatting = Formatting.Indented;
+            //document.WriteTo(xmlTextWriter);
+
+            //Debug.Log(stringBuilder.ToString());
+
+            string levelFilesFolder = Application.persistentDataPath + "/LevelFiles";
+            Debug.Log(levelFilesFolder);
+
+            if (!Directory.Exists(levelFilesFolder))
+                Directory.CreateDirectory(levelFilesFolder);
+
+            string levelFilePath = levelFilesFolder + "/" + DateTime.Now.ToString("yyyyMMddhhmmss") + "_level_data.xml";
+
+            document.Save(levelFilePath);
+        }
+
+        private List<LevelItemInfo> GetLevelItemInfos(Transform itemTypeTrans)
+        {
+            List<LevelItemInfo> itemInfos = new List<LevelItemInfo>(charactersTrans.childCount);
+
+            foreach (Transform child in itemTypeTrans)
+            {
+                itemInfos.Add(new LevelItemInfo()
+                {
+                    Path = itemTypeTrans.name,
+                    Name = child.name,
+                    X = child.position.x,
+                    Y = child.position.y,
+                });
+
+                Debug.Log($"Name: {child.name}\n" + $"X: {child.position.x} Y: {child.position.y}");
+            }
+
+            return itemInfos;
+        }
+
+        private void SetItemInfoAttributes(List<LevelItemInfo> itemInfos, XmlDocument document, XmlElement level)
+        {
+
+            foreach (var levelItemInfo in itemInfos)
+            {
+                XmlElement levelItem = document.CreateElement("levelItem");
+                levelItem.SetAttribute("name", levelItemInfo.Path + "/" + levelItemInfo.Name);
+                levelItem.SetAttribute("x", levelItemInfo.X.ToString());
+                levelItem.SetAttribute("y", levelItemInfo.Y.ToString());
+                level.AppendChild(levelItem);
             }
         }
     }

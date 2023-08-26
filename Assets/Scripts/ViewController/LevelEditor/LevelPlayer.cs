@@ -39,8 +39,11 @@ namespace ShootingEditor2D
 
                 // 加载相应的预制体
                 GameObject levelItemPrefab = Resources.Load<GameObject>(levelItemName);
-                GameObject levelItemGameObj = Instantiate(levelItemPrefab, transform);
-                levelItemGameObj.transform.position = new Vector3(levelItemX, levelItemY, 0);
+                if (levelItemPrefab != null)
+                {
+                    GameObject levelItemGameObj = Instantiate(levelItemPrefab, transform);
+                    levelItemGameObj.transform.position = new Vector3(levelItemX, levelItemY, 0);
+                }
             }
         }
 
