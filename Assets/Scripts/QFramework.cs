@@ -193,18 +193,18 @@ namespace QFramework
         /// <summary>
         /// 注册模型组件
         /// </summary>
-        /// <typeparam name="T">模型类型</typeparam>
+        /// <typeparam name="TModel">模型类型</typeparam>
         /// <param name="modelInstance">模型实例</param>
         /// <remarks>
         /// 模型组件在软件架构中通常用来表示、管理数据和业务逻辑的状态；
         /// 主要用于：数据封装、业务逻辑、状态管理、通知变更、与其他组件的解耦。
         /// </remarks>
-        public void RegisterModel<T>(T modelInstance) where T : IModel
+        public void RegisterModel<TModel>(TModel modelInstance) where TModel : IModel
         {
             // 设置架构
             modelInstance.SetArchitecture(this);
             // 注册到 IOC 容器
-            mContainer.Register<T>(modelInstance);
+            mContainer.Register<TModel>(modelInstance);
 
             // 如果架构还未初始化，将Model组件添加到缓存列表中，稍后统一初始化
             if (!mInited)
@@ -217,31 +217,31 @@ namespace QFramework
         /// <summary>
         /// 注册工具组件
         /// </summary>
-        /// <typeparam name="T">工具类型</typeparam>
+        /// <typeparam name="TUtility">工具类型</typeparam>
         /// <param name="utilityInstance">工具实例</param>
         /// <remarks>
         /// 工具组件是用于提供各种实用工具的组件，例如日志、配置读取等。
         /// </remarks>
-        public void RegisterUtility<T>(T utilityInstance) where T : IUtility
+        public void RegisterUtility<TUtility>(TUtility utilityInstance) where TUtility : IUtility
         {
             // 注册到 IOC 容器
-            mContainer.Register<T>(utilityInstance);
+            mContainer.Register<TUtility>(utilityInstance);
         }
 
         /// <summary>
         /// 注册系统组件
         /// </summary>
-        /// <typeparam name="T">系统类型</typeparam>
+        /// <typeparam name="TSystem">系统类型</typeparam>
         /// <param name="systemInstance">系统实例</param>
         /// <remarks>
         /// 系统组件通常负责处理业务逻辑和协调其他组件。
         /// </remarks>
-        public void RegisterSystem<T>(T systemInstance) where T : ISystem
+        public void RegisterSystem<TSystem>(TSystem systemInstance) where TSystem : ISystem
         {
             // 设置架构
             systemInstance.SetArchitecture(this);
             // 注册到IOC容器
-            mContainer.Register<T>(systemInstance);
+            mContainer.Register<TSystem>(systemInstance);
 
             // 如果架构还未初始化，将System组件添加到缓存列表中，稍后统一初始化
             if (!mInited)
@@ -254,47 +254,47 @@ namespace QFramework
         /// <summary>
         /// 获取模型组件
         /// </summary>
-        /// <typeparam name="T">模型类型，必须实现 I模型接口</typeparam>
+        /// <typeparam name="TModel">模型类型，必须实现 I模型接口</typeparam>
         /// <returns>返回指定类型的模型实例</returns>
-        public T GetModel<T>() where T : class, IModel
+        public TModel GetModel<TModel>() where TModel : class, IModel
         {
             // 从 IOC 容器中获取指定类型的模型组件实例
-            return mContainer.Get<T>();
+            return mContainer.Get<TModel>();
         }
 
         /// <summary>
         /// 获取工具组件
         /// </summary>
-        /// <typeparam name="T">工具类型，必须实现 I工具接口</typeparam>
+        /// <typeparam name="TUtility">工具类型，必须实现 I工具接口</typeparam>
         /// <returns>返回指定类型的工具实例</returns>
-        public T GetUtility<T>() where T : class, IUtility
+        public TUtility GetUtility<TUtility>() where TUtility : class, IUtility
         {
             // 从 IOC 容器中获取指定类型的工具组件实例
-            return mContainer.Get<T>();
+            return mContainer.Get<TUtility>();
         }
 
         /// <summary>
         /// 获取系统组件
         /// </summary>
-        /// <typeparam name="T">系统类型，必须实现 I系统接口</typeparam>
+        /// <typeparam name="TSystem">系统类型，必须实现 I系统接口</typeparam>
         /// <returns>返回指定类型的系统实例</returns>
-        public T GetSystem<T>() where T : class, ISystem
+        public TSystem GetSystem<TSystem>() where TSystem : class, ISystem
         {
             // 从 IOC 容器中获取指定类型的系统组件实例
-            return mContainer.Get<T>();
+            return mContainer.Get<TSystem>();
         }
 
         /// <summary>
         /// 发送命令
         /// </summary>
-        /// <typeparam name="T">命令类型，必须实现 ICommand 接口，并具有无参数的构造函数</typeparam>
+        /// <typeparam name="TCommand">命令类型，必须实现 ICommand 接口，并具有无参数的构造函数</typeparam>
         /// <remarks>
         /// 命令模式用于封装请求作为对象，从而允许用户参数化请求、排队请求、并提供其他功能。
         /// </remarks>
-        public void SendCommand<T>() where T : ICommand, new()
+        public void SendCommand<TCommand>() where TCommand : ICommand, new()
         {
             // 创建指定类型的命令实例
-            var command = new T();
+            var command = new TCommand();
             // 设置其架构为当前架构
             command.SetArchitecture(this);
             // 执行命令
@@ -306,12 +306,12 @@ namespace QFramework
         /// <summary>
         /// 发送命令
         /// </summary>
-        /// <typeparam name="T">命令类型，必须实现 ICommand 接口</typeparam>
+        /// <typeparam name="TCommand">命令类型，必须实现 ICommand 接口</typeparam>
         /// <param name="command">要执行的命令实例</param>
         /// <remarks>
         /// 命令模式用于封装请求作为对象，从而允许用户参数化请求、排队请求、并提供其他功能。
         /// </remarks>
-        public void SendCommand<T>(T command) where T : ICommand
+        public void SendCommand<TCommand>(TCommand command) where TCommand : ICommand
         {
             // 设置其架构为当前架构
             command.SetArchitecture(this);
@@ -338,49 +338,49 @@ namespace QFramework
         /// <summary>
         /// 发送事件
         /// </summary>
-        /// <typeparam name="T">事件类型，必须具有无参数的构造函数</typeparam>
+        /// <typeparam name="TEvent">事件类型，必须具有无参数的构造函数</typeparam>
         /// <remarks>
         /// 事件系统允许组件之间进行松耦合的通信，使得事件的发送者和接收者不必直接相互引用。
         /// </remarks>
-        public void SendEvent<T>() where T : new()
+        public void SendEvent<TEvent>() where TEvent : new()
         {
             // 发送指定类型的事件
-            mTypeEventSystem.Send<T>();
+            mTypeEventSystem.Send<TEvent>();
         }
 
         /// <summary>
         /// 发送事件
         /// </summary>
-        /// <typeparam name="T">事件类型</typeparam>
+        /// <typeparam name="TEvent">事件类型</typeparam>
         /// <param name="e">事件实例</param>
         /// <remarks>
         /// 事件系统允许组件之间进行松耦合的通信，使得事件的发送者和接收者不必直接相互引用。
         /// </remarks>
-        public void SendEvent<T>(T e)
+        public void SendEvent<TEvent>(TEvent e)
         {
             // 发送指定类型的事件
-            mTypeEventSystem.Send<T>(e);
+            mTypeEventSystem.Send<TEvent>(e);
         }
 
         /// <summary>
         /// 注册事件
         /// </summary>
-        /// <typeparam name="T">事件类型</typeparam>
+        /// <typeparam name="TEvent">事件类型</typeparam>
         /// <param name="onEvent">事件处理的委托方法</param>
         /// <returns>返回一个注销接口，可用于注销此事件</returns>
-        public IUnRegister RegisterEvent<T>(Action<T> onEvent)
+        public IUnRegister RegisterEvent<TEvent>(Action<TEvent> onEvent)
         {
-            return mTypeEventSystem.Register<T>(onEvent);
+            return mTypeEventSystem.Register<TEvent>(onEvent);
         }
 
         /// <summary>
         /// 注销事件
         /// </summary>
-        /// <typeparam name="T">事件类型</typeparam>
+        /// <typeparam name="TEvent">事件类型</typeparam>
         /// <param name="onEvent">要注销的事件处理的委托方法</param>
-        public void UnRegisterEvent<T>(Action<T> onEvent)
+        public void UnRegisterEvent<TEvent>(Action<TEvent> onEvent)
         {
-            mTypeEventSystem.UnRegister<T>(onEvent);
+            mTypeEventSystem.UnRegister<TEvent>(onEvent);
         }
     }
     #endregion
