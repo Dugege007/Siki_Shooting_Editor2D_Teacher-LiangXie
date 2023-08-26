@@ -200,14 +200,6 @@ namespace ShootingEditor2D
             SetItemInfoAttributes(characterInfos, document, level);
             SetItemInfoAttributes(levelInfos, document, level);
 
-            //StringBuilder stringBuilder = new StringBuilder();
-            //StringWriter stringWriter = new StringWriter(stringBuilder);
-            //XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
-            //xmlTextWriter.Formatting = Formatting.Indented;
-            //document.WriteTo(xmlTextWriter);
-
-            //Debug.Log(stringBuilder.ToString());
-
             string levelFilesFolder = Application.persistentDataPath + "/LevelFiles";
             Debug.Log(levelFilesFolder);
 

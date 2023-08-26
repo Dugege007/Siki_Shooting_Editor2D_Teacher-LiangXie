@@ -15,6 +15,7 @@ namespace FrameworkDesign
     {
         // 存储单例实例
         private static T mInstance;
+
         /// <summary>
         /// 获取单例实例
         /// </summary>

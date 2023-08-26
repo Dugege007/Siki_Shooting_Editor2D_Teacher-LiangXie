@@ -1,4 +1,3 @@
-using ShootingEditor2D;
 using System;
 using System.Collections.Generic;
 
