@@ -119,7 +119,6 @@ namespace ShootingEditor2D
                             delayTask.FinishSeconds = CurrentSeconds + delayTask.Seconds;
                             break;
 
-
                         case DelayTaskState.Started:
                             // 如果当前时间大于等于结束时间
                             if (CurrentSeconds >= delayTask.FinishSeconds)

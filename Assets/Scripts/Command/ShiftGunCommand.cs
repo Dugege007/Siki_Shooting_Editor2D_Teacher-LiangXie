@@ -6,8 +6,7 @@ namespace ShootingEditor2D
     {
         protected override void OnExecute()
         {
-            this.GetSystem<IGunSystem>()
-                .ShiftGun();
+            this.GetSystem<IGunSystem>().ShiftGun();
         }
     }
 }

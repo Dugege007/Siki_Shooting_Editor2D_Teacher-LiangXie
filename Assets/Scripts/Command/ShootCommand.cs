@@ -25,8 +25,7 @@ namespace ShootingEditor2D
             {
                 gunSystem.CurrentGun.GunState.Value = GunState.Idle;
 
-                if (gunSystem.CurrentGun.BulletCountInGun.Value == 0 &&
-                gunSystem.CurrentGun.BulletCountOutGun.Value > 0)
+                if (gunSystem.CurrentGun.BulletCountInGun.Value == 0 && gunSystem.CurrentGun.BulletCountOutGun.Value > 0)
                 {
                     this.SendCommand<ReloadCommand>();
                 }

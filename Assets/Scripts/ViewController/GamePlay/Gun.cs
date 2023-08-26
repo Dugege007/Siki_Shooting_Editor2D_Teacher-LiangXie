@@ -42,7 +42,8 @@ namespace ShootingEditor2D
                 this.SendCommand<ReloadCommand>();
             }
 
-            Debug.Log("装弹时切枪，再切回来时，会卡在 Reloading 状态");
+            // Debug.Log("装弹时切枪，再切回来时，会卡在 Reloading 状态");
+            // 已修复
         }
 
         private void OnDestroy()

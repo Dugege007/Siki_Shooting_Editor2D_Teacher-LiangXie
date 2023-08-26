@@ -1,4 +1,5 @@
 ﻿using FrameworkDesign;
+using Mono.Cecil;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -45,7 +46,7 @@ namespace ShootingEditor2D
         };
 
         private Queue<GunInfo> mGunInfos = new Queue<GunInfo>();
-        public Queue<GunInfo> GunInfos {get { return mGunInfos;}}
+        public Queue<GunInfo> GunInfos { get { return mGunInfos; } }
 
         public void PickGun(string name, int bulletCountInGun, int bulletCountOutGun)
         {
@@ -108,10 +109,65 @@ namespace ShootingEditor2D
             CurrentGun.BulletCountInGun.Value = nextBulletInGun;
             CurrentGun.BulletCountOutGun.Value = nextBulletOutGun;
 
+            // 如果切回时是换弹状态
+            if (CurrentGun.GunState.Value == GunState.Reloading)
+                ReloadBullet();
+            // 如果切回时是射击状态
+            else if (CurrentGun.GunState.Value == GunState.Shooting)
+                ContinueShooting();
+
             // 发送事件给表现层，以更新枪械信息 UI
             this.SendEvent(new OnCurrentGunChanged()
             {
                 Name = nextGunName,
+            });
+        }
+
+        private void ReloadBullet()
+        {
+            ITimeSystem timeSystem = this.GetSystem<ITimeSystem>();
+            IGunConfigModel gunConfigModel = this.GetModel<IGunConfigModel>();
+
+            GunConfigItem gunConfigItem = gunConfigModel.GetItemByName(CurrentGun.Name.Value);
+            float reloadSeconds = gunConfigItem.ReloadSeconds;
+            int needBulletCount = gunConfigItem.MaxBulletCount - CurrentGun.BulletCountInGun.Value;
+
+            // 重新换弹
+            timeSystem.AddDelayTask(reloadSeconds, () =>
+            {
+                // 如果枪外子弹量充足
+                if (CurrentGun.BulletCountOutGun.Value >= needBulletCount)
+                {
+                    CurrentGun.BulletCountInGun.Value += needBulletCount;
+                    CurrentGun.BulletCountOutGun.Value -= needBulletCount;
+                }
+                // 不充足
+                else
+                {
+                    CurrentGun.BulletCountInGun.Value += CurrentGun.BulletCountOutGun.Value;
+                    CurrentGun.BulletCountOutGun.Value = 0;
+                }
+
+                // 切换到正常状态
+                CurrentGun.GunState.Value = GunState.Idle;
+            });
+        }
+
+        private void ContinueShooting()
+        {
+            ITimeSystem timeSystem = this.GetSystem<ITimeSystem>();
+            IGunConfigModel gunConfigModel = this.GetModel<IGunConfigModel>();
+
+            GunConfigItem gunConfigItem = gunConfigModel.GetItemByName(CurrentGun.Name.Value);
+
+            timeSystem.AddDelayTask(1 / gunConfigItem.Frequency, () =>
+            {
+                CurrentGun.GunState.Value = GunState.Idle;
+
+                if (CurrentGun.BulletCountInGun.Value == 0 && CurrentGun.BulletCountOutGun.Value > 0)
+                {
+                    ReloadBullet();
+                }
             });
         }
     }
