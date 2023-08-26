@@ -1198,6 +1198,11 @@ namespace QFramework
     /// </remarks>
     public class BindableProperty<T>
     {
+        public BindableProperty(T defaultValue = default)
+        {
+            mValue = defaultValue;
+        }
+
         private T mValue = default(T);
 
         /// <summary>
@@ -1209,13 +1214,12 @@ namespace QFramework
 
             set
             {
-                if (!value.Equals(mValue))
-                {
-                    mValue = value;
+                if (value == null && mValue == null) return;
+                if (value != null && value.Equals(mValue)) return;
 
-                    // 数值发生变化时，通知观察者更新界面（数值驱动）
-                    mOnValueChanged?.Invoke(mValue);
-                }
+                mValue = value;
+                // 数值发生变化时，通知观察者更新界面（数值驱动）
+                mOnValueChanged?.Invoke(mValue);
             }
         }
 
