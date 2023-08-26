@@ -1,17 +1,35 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Xml;
 using UnityEngine;
 
 namespace ShootingEditor2D
 {
     public class LevelEditor : MonoBehaviour
     {
+        private class LevelItemInfo
+        {
+            public string Name;
+            public float X;
+            public float Y;
+        }
+
         public enum OperateMode
         {
             Draw,
             Erase
         }
 
+        public enum BrushType
+        {
+            Ground,
+            Player,
+        }
+
         private OperateMode mCurrentOperateMode;
+        private BrushType mCurrentBrushType = BrushType.Ground;
 
         public SpriteRenderer EmptyHighLight;
         private GameObject mCurrentObjectMouseOn;
@@ -23,24 +41,88 @@ namespace ShootingEditor2D
             alignment = TextAnchor.MiddleCenter,
         });
 
-        private Lazy<GUIStyle> mButtonStyle = new Lazy<GUIStyle>(() => new GUIStyle(GUI.skin.button)
+        private Lazy<GUIStyle> mLeftButtonStyle = new Lazy<GUIStyle>(() => new GUIStyle(GUI.skin.button)
         {
             fontSize = 40,
             alignment = TextAnchor.MiddleCenter,
         });
 
+        private Lazy<GUIStyle> mRightButtonStyle = new Lazy<GUIStyle>(() => new GUIStyle(GUI.skin.button)
+        {
+            fontSize = 35,
+            alignment = TextAnchor.MiddleCenter,
+        });
+
         private void OnGUI()
         {
-            Rect modeLabelRect = RectHelper.RectForAnchorCenter(Screen.width * 0.5f, 35f, 300f, 50f);
-            GUI.Label(modeLabelRect, mCurrentOperateMode.ToString(), mModelLabelStyle.Value);
+            Rect modeLabelRect = RectHelper.RectForAnchorCenter(Screen.width * 0.5f, 35, 600, 60);
+
+            if (mCurrentOperateMode == OperateMode.Draw)
+                GUI.Label(modeLabelRect, mCurrentOperateMode + ": " + mCurrentBrushType, mModelLabelStyle.Value);
+            else
+                GUI.Label(modeLabelRect, mCurrentOperateMode.ToString(), mModelLabelStyle.Value);
 
             Rect drawButtonRect = new Rect(20, 20, 200, 60);
-            if (GUI.Button(drawButtonRect, "»æÖÆ", mButtonStyle.Value))
+            if (GUI.Button(drawButtonRect, "»æÖÆ", mLeftButtonStyle.Value))
                 mCurrentOperateMode = OperateMode.Draw;
 
             Rect eraseButtonRect = new Rect(20, 100, 200, 60);
-            if (GUI.Button(eraseButtonRect, "ÏðÆ¤", mButtonStyle.Value))
+            if (GUI.Button(eraseButtonRect, "ÏðÆ¤", mLeftButtonStyle.Value))
                 mCurrentOperateMode = OperateMode.Erase;
+
+            Rect saveButtonRect = new Rect(Screen.width - 220, 20, 200, 60);
+            if (GUI.Button(saveButtonRect, "±£´æ", mLeftButtonStyle.Value))
+            {
+                mCurrentOperateMode = OperateMode.Erase;
+                Debug.Log("±£´æ");
+
+                List<LevelItemInfo> infos = new List<LevelItemInfo>(transform.childCount);
+                foreach (Transform child in transform)
+                {
+                    infos.Add(new LevelItemInfo()
+                    {
+                        Name = child.name,
+                        X = child.position.x,
+                        Y = child.position.y,
+                    });
+                    Debug.Log($"Name: {child.name}\n" + $"X: {child.position.x} Y: {child.position.y}");
+                }
+
+                XmlDocument document = new XmlDocument();
+                XmlDeclaration declaration = document.CreateXmlDeclaration("1.0", "UTF-8", "");
+                document.AppendChild(declaration);
+
+                XmlElement level = document.CreateElement("level");
+                document.AppendChild(level);
+
+                foreach (var levelItemInfo in infos)
+                {
+                    XmlElement levelItem = document.CreateElement("levelItem");
+                    levelItem.SetAttribute("name", levelItemInfo.Name);
+                    levelItem.SetAttribute("x", levelItemInfo.X.ToString());
+                    levelItem.SetAttribute("y", levelItemInfo.Y.ToString());
+                    level.AppendChild(levelItem);
+                }
+
+                StringBuilder stringBuilder = new StringBuilder();
+                StringWriter stringWriter = new StringWriter(stringBuilder);
+                XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
+                xmlTextWriter.Formatting = Formatting.Indented;
+                document.WriteTo(xmlTextWriter);
+
+                Debug.Log(stringBuilder.ToString());
+            }
+
+            if (mCurrentOperateMode == OperateMode.Draw)
+            {
+                Rect groundButtonRect = new Rect(Screen.width - 220, 100, 200, 60);
+                if (GUI.Button(groundButtonRect, "µØ¿é", mRightButtonStyle.Value))
+                    mCurrentBrushType = BrushType.Ground;
+
+                Rect playerButtonRect = new Rect(Screen.width - 220, 180, 200, 60);
+                if (GUI.Button(playerButtonRect, "Íæ¼Ò", mRightButtonStyle.Value))
+                    mCurrentBrushType = BrushType.Player;
+            }
         }
 
         private void Update()
@@ -92,16 +174,26 @@ namespace ShootingEditor2D
                 }
             }
 
-            if (Input.GetMouseButtonDown(0) ||
-                Input.GetMouseButton(0) &&
-                GUIUtility.hotControl == 0)
+            if ((Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) && GUIUtility.hotControl == 0)
             {
                 if (mCanDraw && mCurrentOperateMode == OperateMode.Draw)
                 {
-                    GameObject groundPrefab = Resources.Load<GameObject>("Level/Ground");
-                    GameObject groundObj = Instantiate(groundPrefab, transform);
-                    groundObj.transform.position = mouseWorldPos;
-                    groundObj.name = "Ground";
+                    if (mCurrentBrushType == BrushType.Ground)
+                    {
+                        GameObject groundPrefab = Resources.Load<GameObject>("Level/Ground");
+                        GameObject groundObj = Instantiate(groundPrefab, transform);
+                        groundObj.transform.position = mouseWorldPos;
+                        groundObj.name = "Ground";
+                    }
+                    else if (mCurrentBrushType == BrushType.Player)
+                    {
+                        GameObject playerPrefab = Resources.Load<GameObject>("Level/Ground");
+                        GameObject playerObj = Instantiate(playerPrefab, transform);
+                        playerObj.transform.position = mouseWorldPos;
+                        playerObj.name = "Player";
+
+                        playerObj.GetComponent<SpriteRenderer>().color = Color.yellow;
+                    }
 
                     mCanDraw = false;
                 }
