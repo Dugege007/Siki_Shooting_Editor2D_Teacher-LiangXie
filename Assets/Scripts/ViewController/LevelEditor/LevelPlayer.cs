@@ -1,3 +1,5 @@
+using System.IO;
+using System.Linq;
 using System.Xml;
 using UnityEngine;
 
@@ -5,11 +7,23 @@ namespace ShootingEditor2D
 {
     public class LevelPlayer : MonoBehaviour
     {
-        public TextAsset LevelFile;
-
-        private void Start()
+        private enum State
         {
-            string xml = LevelFile.text;
+            Selection,
+            Playing,
+        }
+
+        private State mCurrentState = State.Selection;
+
+        private static string mLevelFilesFolder;
+
+        private void Awake()
+        {
+            mLevelFilesFolder = Application.persistentDataPath + "/LevelFiles";
+        }
+
+        private void ParseAndRun(string xml)
+        {
             XmlDocument document = new XmlDocument();
             document.LoadXml(xml);
 
@@ -27,6 +41,30 @@ namespace ShootingEditor2D
                 GameObject levelItemPrefab = Resources.Load<GameObject>(levelItemName);
                 GameObject levelItemGameObj = Instantiate(levelItemPrefab, transform);
                 levelItemGameObj.transform.position = new Vector3(levelItemX, levelItemY, 0);
+            }
+        }
+
+        private void OnGUI()
+        {
+            if (mCurrentState == State.Selection)
+            {
+                string[] filePaths = Directory.GetFiles(mLevelFilesFolder);
+
+                int y = 10;
+
+                foreach (string filePath in filePaths.Where(f => f.EndsWith("xml")))
+                {
+                    string fileName = Path.GetFileName(filePath);
+
+                    if (GUI.Button(new Rect(10, y, 100, 40), fileName))
+                    {
+                        string xml = File.ReadAllText(filePath);
+                        ParseAndRun(xml);
+                        mCurrentState = State.Playing;
+                    }
+
+                    y += 50;
+                }
             }
         }
     }

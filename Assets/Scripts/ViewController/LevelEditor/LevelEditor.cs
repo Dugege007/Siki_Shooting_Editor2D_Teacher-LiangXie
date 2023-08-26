@@ -104,13 +104,24 @@ namespace ShootingEditor2D
                     level.AppendChild(levelItem);
                 }
 
-                StringBuilder stringBuilder = new StringBuilder();
-                StringWriter stringWriter = new StringWriter(stringBuilder);
-                XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
-                xmlTextWriter.Formatting = Formatting.Indented;
-                document.WriteTo(xmlTextWriter);
+                //StringBuilder stringBuilder = new StringBuilder();
+                //StringWriter stringWriter = new StringWriter(stringBuilder);
+                //XmlTextWriter xmlTextWriter = new XmlTextWriter(stringWriter);
+                //xmlTextWriter.Formatting = Formatting.Indented;
+                //document.WriteTo(xmlTextWriter);
 
-                Debug.Log(stringBuilder.ToString());
+                //Debug.Log(stringBuilder.ToString());
+
+                string levelFilesFolder = Application.persistentDataPath + "/LevelFiles";
+                Debug.Log(levelFilesFolder);
+
+                if (!Directory.Exists(levelFilesFolder))
+                {
+                    Directory.CreateDirectory(levelFilesFolder);
+                }
+
+                string levelFilePath = levelFilesFolder + "/" + DateTime.Now.ToString("yyyyMMddhhmmss") + "_level_data.xml";
+                document.Save(levelFilePath);
             }
 
             if (mCurrentOperateMode == OperateMode.Draw)
