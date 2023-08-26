@@ -7,7 +7,6 @@ namespace ShootingEditor2D
     /// </summary>
     public class ShootingEditor2D : Architecture<ShootingEditor2D>
     {
-        // 初始化架构
         protected override void Init()
         {
             // 将所需要的层注册到架构中
