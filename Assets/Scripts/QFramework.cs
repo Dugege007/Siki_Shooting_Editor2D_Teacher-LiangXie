@@ -1010,6 +1010,8 @@ namespace QFramework
         // 使用字典存储所有注册的事件
         Dictionary<Type, IRegistrations> mEventRegistration = new Dictionary<Type, IRegistrations>();
 
+        public static readonly TypeEventSystem Global = new TypeEventSystem();
+
         /// <summary>
         /// 注册事件
         /// </summary>
@@ -1073,6 +1075,24 @@ namespace QFramework
             {
                 (registrations as Registrations<T>).OnEvent -= onEvent;
             }
+        }
+    }
+
+    public interface IOnEvent<T>
+    {
+        void OnEvent(T e);
+    }
+
+    public static class OnGlobalEventExtension
+    {
+        public static IUnRegister RegisterEvent<T>(this IOnEvent<T> self) where T : struct
+        {
+            return TypeEventSystem.Global.Register<T>(self.OnEvent);
+        }
+
+        public static void UnRegisterEvent<T>(this IOnEvent<T> self) where T : struct
+        {
+            TypeEventSystem.Global.UnRegister<T>(self.OnEvent);
         }
     }
     #endregion
