@@ -1,5 +1,5 @@
 ﻿
-using FrameworkDesign;
+using QFramework;
 
 namespace ShootingEditor2D
 {
