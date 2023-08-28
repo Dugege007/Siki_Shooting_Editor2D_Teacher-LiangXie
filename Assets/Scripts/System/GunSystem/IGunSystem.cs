@@ -57,11 +57,11 @@ namespace ShootingEditor2D
                 CurrentGun.BulletCountOutGun.Value += bulletCountOutGun;
             }
             // 如果与缓存的枪械相同
-            else if (mGunInfos.Any(gunInfo => gunInfo.Name.Value == name))
+            else if (mGunInfos.Any(info => info.Name.Value == name))
             {
                 // 从缓存中取出枪械信息
                 // .First() 方法返回序列中满足条件的第一个元素
-                GunInfo gunInfo = mGunInfos.First(gunInfo => gunInfo.Name.Value == name);
+                GunInfo gunInfo = mGunInfos.First(info => info.Name.Value == name);
                 gunInfo.BulletCountOutGun.Value += bulletCountInGun;
                 gunInfo.BulletCountOutGun.Value += bulletCountOutGun;
             }
